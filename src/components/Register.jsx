@@ -8,12 +8,12 @@ function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
     const newErrors = {};
 
     // Check for username errors
@@ -39,6 +39,7 @@ function Register() {
       setErrors(newErrors);
       return;
     }
+    setIsLoading(true);
 
     const [data, error] = await apiRequest("post", "auth/signup", {
       username,
@@ -53,6 +54,7 @@ function Register() {
       const errorMessage = error.message || "An error occurred";
       toast.error(errorMessage);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -120,7 +122,7 @@ function Register() {
               </div>
             )}
           </div>
-          <Button type="submit" rounded fullWidth>
+          <Button type="submit" rounded fullWidth isLoading={isLoading}>
             Register
           </Button>
         </form>

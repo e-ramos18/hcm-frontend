@@ -25,6 +25,7 @@ function EventComponent({ event }) {
 const Dashboard = () => {
   const { currentUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [isTimeLoading, setIsTimeLoading] = useState(false);
   const [timeLogs, setTimeLogs] = useState([]);
   const [isTimedIn, setIsTimedIn] = useState(false);
   const [view, setView] = useState("table"); // 'table' or 'calendar'
@@ -73,6 +74,7 @@ const Dashboard = () => {
   };
 
   const handleTimeIn = async () => {
+    setIsTimeLoading(true);
     const [data, error] = await apiRequest("post", "/time/in");
 
     if (data?.data) {
@@ -84,9 +86,11 @@ const Dashboard = () => {
       const errorMessage = error.message || "Error timing in.";
       toast.error(errorMessage);
     }
+    setIsTimeLoading(false);
   };
 
   const handleTimeOut = async () => {
+    setIsTimeLoading(true);
     const [data, error] = await apiRequest("post", "/time/out");
 
     if (data) {
@@ -97,6 +101,7 @@ const Dashboard = () => {
       const errorMessage = error.message || "Failed to time out.";
       toast.error(errorMessage);
     }
+    setIsTimeLoading(false);
   };
 
   const events = timeLogs.map((log) => ({
@@ -142,11 +147,16 @@ const Dashboard = () => {
       <div className="flex items-center justify-between">
         <div>
           {isTimedIn ? (
-            <Button onClick={handleTimeOut} variant="danger" rounded>
+            <Button
+              onClick={handleTimeOut}
+              variant="danger"
+              rounded
+              isLoading={isTimeLoading}
+            >
               Time Out
             </Button>
           ) : (
-            <Button onClick={handleTimeIn} rounded>
+            <Button onClick={handleTimeIn} rounded isLoading={isTimeLoading}>
               Time In
             </Button>
           )}

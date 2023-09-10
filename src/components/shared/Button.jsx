@@ -1,6 +1,7 @@
 import React from "react";
 import { Tooltip } from "react-tippy";
 import "react-tippy/dist/tippy.css";
+import { FaSpinner } from "react-icons/fa";
 
 function Button({
   variant = "primary",
@@ -9,6 +10,7 @@ function Button({
   fullWidth = false,
   icon = null,
   tooltip = "",
+  isLoading = false,
   children = null, // This prop can be optional
   ...props
 }) {
@@ -33,6 +35,7 @@ function Button({
     ${SIZES[size] || SIZES.medium}
     ${rounded ? "rounded-full" : "rounded-md"}
     ${fullWidth ? "w-full" : ""}
+    ${isLoading ? "cursor-not-allowed flex justify-center items-center" : ""}
   `;
 
   // If an icon is provided, render the icon button
@@ -50,8 +53,8 @@ function Button({
   }
 
   return (
-    <button className={btnClasses.trim()} {...props}>
-      {children}
+    <button className={`${btnClasses.trim()}`} {...props} disabled={isLoading}>
+      {isLoading ? <FaSpinner className="animate-spin" /> : children}
     </button>
   );
 }

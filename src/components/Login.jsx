@@ -9,6 +9,7 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -36,6 +37,7 @@ function Login() {
       return;
     }
 
+    setIsLoading(true);
     const [data, error] = await apiRequest("post", "/auth/login", {
       username,
       password,
@@ -49,6 +51,7 @@ function Login() {
       const errorMessage = error.message || "An error occurred";
       toast.error(errorMessage);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -95,7 +98,7 @@ function Login() {
             )}
           </div>
 
-          <Button type="submit" rounded fullWidth>
+          <Button type="submit" rounded fullWidth isLoading={isLoading}>
             Login
           </Button>
         </form>

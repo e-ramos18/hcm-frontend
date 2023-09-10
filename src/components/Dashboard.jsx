@@ -8,6 +8,8 @@ import { useAuth } from "../context/AuthContext";
 import NoTimeLogsMessage from "./NoTimeLogsMessage";
 import { Button, Loader } from "./shared";
 import apiRequest from "../utils/apiRequest";
+import Clock from "./Clock";
+
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const localizer = momentLocalizer(moment);
@@ -140,10 +142,19 @@ const Dashboard = () => {
           Logout
         </Button>
       </div>
-      <p className="text-gray-600 mb-4">
-        Welcome,{" "}
-        <span className="text-gray-800 font-bold">{currentUser.username}</span>!
-      </p>
+      <div className="flex items-center mb-4 justify-between">
+        <p className="text-gray-600">
+          Welcome,{" "}
+          <span className="text-gray-800 font-bold">
+            {currentUser.username}
+          </span>
+          !
+        </p>
+        <div className="ml-4 text-center">
+          <Clock />
+        </div>
+      </div>
+
       <div className="flex items-center justify-between">
         <div>
           {isTimedIn ? (
